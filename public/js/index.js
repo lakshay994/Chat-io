@@ -10,16 +10,19 @@ socket.on('connect', function() {
 socket.on('newMessage', function(message){
     console.log('New Message', message);
 
+    let formattedTime = moment(message.createdAt).format('h:mm a');
     const li = document.createElement('li');
-    li.appendChild(document.createTextNode(`${message.from}: ${message.text}`));
+    li.appendChild(document.createTextNode(`${message.from} (${formattedTime}): ${message.text}`));
     messageList.appendChild(li);
 });
 
 socket.on('newLocationMessage', function(location){
     console.log(location.url);
 
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+
     const li = document.createElement('li');
-    let message = document.createTextNode(`${location.from}: `);
+    let message = document.createTextNode(`${location.from}: (${formattedTime})`);
 
     const a = document.createElement('a');
     let url = location.url;
