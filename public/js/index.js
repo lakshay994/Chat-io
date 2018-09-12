@@ -11,25 +11,27 @@ socket.on('newMessage', function(message){
     console.log('New Message', message);
 
     let formattedTime = moment(message.createdAt).format('h:mm a');
-    const li = document.createElement('li');
-    li.appendChild(document.createTextNode(`${message.from} (${formattedTime}): ${message.text}`));
-    messageList.appendChild(li);
+    let template = document.querySelector('#message-template').innerHTML;
+    let html = Mustache.render(template, {
+        from: message.from,
+        text: message.text,
+        createdAt: formattedTime
+    });
+    messageList.innerHTML += html;
 });
 
 socket.on('newLocationMessage', function(location){
     console.log(location.url);
 
     var formattedTime = moment(message.createdAt).format('h:mm a');
+    let template = document.querySelector('#location-message-template').innerHTML;
+    let html = Mustache.render(template, {
+        from: location.from,
+        url: location.url,
+        createdAt: formattedTime
+    });
 
-    const li = document.createElement('li');
-    let message = document.createTextNode(`${location.from}: (${formattedTime})`);
-
-    const a = document.createElement('a');
-    let url = location.url;
-    a.setAttribute('href', url);
-    a.appendChild(document.createTextNode('My Current Location'));
-    li.appendChild(a);
-    messageList.appendChild(li);
+    messageList.innerHTML += html;
 });
 
 socket.on('disconnect', function() {
