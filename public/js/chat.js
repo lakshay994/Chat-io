@@ -3,6 +3,20 @@ let socket = io();
 const messageList = document.querySelector('#messages');
 const sendLocation = document.querySelector('#send-location');
 
+function scrollToBottom(){
+    let newMessage = messageList.lastChild.previousElementSibling;
+
+    let clientHeight = messageList.clientHeight;
+    let scrollTop = messageList.scrollTop;
+    let scrollHeight = messageList.scrollHeight;
+    let newMessageHeight = newMessage.offsetHeight;
+    let lastMessageHeight = newMessage.previousElementSibling.offsetHeight;
+
+    if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight){
+        messageList.scrollTop = scrollHeight;
+    }
+};
+
 socket.on('connect', function() {
     console.log('Connected to the server');
 });
@@ -18,6 +32,7 @@ socket.on('newMessage', function(message){
         createdAt: formattedTime
     });
     messageList.innerHTML += html;
+    scrollToBottom();
 });
 
 socket.on('newLocationMessage', function(location){
