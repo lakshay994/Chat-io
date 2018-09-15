@@ -46,7 +46,6 @@ socket.on('updateUserList', function(users){
 });
 
 socket.on('newMessage', function(message){
-    console.log('New Message', message);
 
     let formattedTime = moment(message.createdAt).format('h:mm a');
     let template = document.querySelector('#message-template').innerHTML;
@@ -83,7 +82,6 @@ document.querySelector('#message-form').addEventListener('submit', (e) => {
     let messageInput = document.querySelector('#message');
 
     socket.emit('createMessage', {
-        from: from,
         text: messageInput.value
     });
 
